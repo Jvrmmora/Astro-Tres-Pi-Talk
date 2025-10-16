@@ -1,0 +1,55 @@
+---
+
+---
+
+<div class="carousel-container">
+  <div class="carousel-text">
+    Esto es una demostración para la charla de "AWS vs GCP vs Azure:
+    entendiendo la nube más allá del logo" by Javier Montaño - David Tabarez
+    • Desarrollado con Astro • Diseño responsive y
+    animaciones fluidas • Tres Pi Medios - Agencia Digital B2B Full Service
+    • Conectamos grandes marcas con tomadores de decisión • Tecnología que
+    genera ROI • ¡No te conformes! •
+  </div>
+</div>
+
+<style>
+  .carousel-container {
+    position: fixed;
+    bottom: 44px;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 20px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .carousel-text {
+    font-size: 1.15rem;
+    font-weight: 600;
+    text-align: center;
+    white-space: nowrap;
+    animation: scrollText 40s linear infinite;
+    color: #ffffff;
+    letter-spacing: 0.01em;
+    line-height: 1.5;
+    font-family: "Space Grotesk", "Inter", system-ui, -apple-system,
+      sans-serif;
+    will-change: transform;
+  }
+
+  @keyframes scrollText {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .carousel-text {
+      font-size: 1rem;
+    }
+  }
+</style>

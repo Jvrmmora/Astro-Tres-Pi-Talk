@@ -1,0 +1,116 @@
+---
+
+---
+
+<div class="cloud-logos">
+  <a
+    class="cloud-link"
+    href="https://aws.amazon.com/"
+    target="_blank"
+    rel="noopener"
+    title="Amazon Web Services"
+  >
+    <img
+      class="cloud-img"
+      src="https://www.unleash.ai/wp-content/uploads/2023/02/AWS-white-800x478.png"
+      alt="AWS"
+    />
+  </a>
+  <a
+    class="cloud-link"
+    href="https://cloud.google.com/"
+    target="_blank"
+    rel="noopener"
+    title="Google Cloud Platform"
+  >
+    <img
+      class="cloud-img"
+      src="https://upload.wikimedia.org/wikipedia/commons/5/51/Google_Cloud_logo.svg"
+      alt="Google Cloud"
+    />
+  </a>
+  <a
+    class="cloud-link"
+    href="https://azure.microsoft.com/"
+    target="_blank"
+    rel="noopener"
+    title="Microsoft Azure"
+  >
+    <img
+      class="cloud-img"
+      src="https://upload.wikimedia.org/wikipedia/commons/a/a8/Microsoft_Azure_Logo.svg"
+      alt="Microsoft Azure"
+    />
+  </a>
+</div>
+
+<style>
+  .cloud-logos {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2.5rem;
+    margin-top: 2.25rem;
+    flex-wrap: wrap;
+  }
+
+  .cloud-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 14px;
+    border-radius: 10px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease,
+      background-color 0.25s ease;
+    background: rgba(15, 17, 21, 0.04);
+  }
+
+  .cloud-link:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    background: rgba(15, 17, 21, 0.06);
+  }
+
+  .cloud-img {
+    height: 34px;
+    width: auto;
+    display: block;
+  }
+
+  @media (max-width: 768px) {
+    .cloud-logos {
+      gap: 2rem;
+    }
+
+    .cloud-logo {
+      width: 80px;
+      height: 80px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .cloud-logos {
+      gap: 1.5rem;
+    }
+
+    .cloud-logo {
+      width: 70px;
+      height: 70px;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const cloudLinks = document.querySelectorAll(".cloud-link");
+    cloudLinks.forEach((el) => {
+      const element = el as HTMLElement;
+      element.addEventListener("mouseenter", () => {
+        element.style.transform = "translateY(-4px)";
+      });
+      element.addEventListener("mouseleave", () => {
+        element.style.transform = "translateY(0)";
+      });
+    });
+  });
+</script>

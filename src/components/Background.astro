@@ -1,0 +1,246 @@
+---
+
+---
+
+<canvas class="bg-canvas" id="bgCanvas"></canvas>
+<div class="background-pattern"></div>
+<div class="floating-shapes">
+  <div class="shape"></div>
+  <div class="shape"></div>
+  <div class="shape"></div>
+  <div class="shape"></div>
+</div>
+
+<style>
+  .background-pattern {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: radial-gradient(
+        circle at 20% 80%,
+        rgba(255, 255, 255, 0.05) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 80% 20%,
+        rgba(255, 255, 255, 0.04) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 40% 40%,
+        rgba(255, 255, 255, 0.03) 0%,
+        transparent 50%
+      );
+    animation: patternMove 20s ease-in-out infinite;
+  }
+
+  .bg-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    pointer-events: none;
+  }
+
+  .floating-shapes {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+
+  .shape {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 50%;
+    animation: float 15s infinite linear;
+  }
+
+  .shape:nth-child(1) {
+    width: 80px;
+    height: 80px;
+    top: 20%;
+    left: 10%;
+    animation-delay: 0s;
+  }
+
+  .shape:nth-child(2) {
+    width: 120px;
+    height: 120px;
+    top: 60%;
+    right: 15%;
+    animation-delay: -5s;
+  }
+
+  .shape:nth-child(3) {
+    width: 60px;
+    height: 60px;
+    top: 80%;
+    left: 20%;
+    animation-delay: -10s;
+  }
+
+  .shape:nth-child(4) {
+    width: 100px;
+    height: 100px;
+    top: 30%;
+    right: 30%;
+    animation-delay: -7s;
+  }
+
+  @keyframes patternMove {
+    0%,
+    100% {
+      transform: translateX(0) translateY(0);
+    }
+    25% {
+      transform: translateX(-20px) translateY(-10px);
+    }
+    50% {
+      transform: translateX(20px) translateY(10px);
+    }
+    75% {
+      transform: translateX(-10px) translateY(20px);
+    }
+  }
+
+  @keyframes float {
+    0% {
+      transform: translateY(0px) rotate(0deg);
+    }
+    33% {
+      transform: translateY(-30px) rotate(120deg);
+    }
+    66% {
+      transform: translateY(30px) rotate(240deg);
+    }
+    100% {
+      transform: translateY(0px) rotate(360deg);
+    }
+  }
+</style>
+
+<script>
+  (function () {
+    const canvas = document.getElementById("bgCanvas") as HTMLCanvasElement;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    
+    let width = (canvas.width = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
+    let mouseX = width / 2;
+    let mouseY = height / 2;
+
+    const particles = Array.from({ length: 120 }).map(() => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      r: Math.random() * 2 + 0.6,
+      vx: (Math.random() - 0.5) * 0.08,
+      vy: (Math.random() - 0.5) * 0.08,
+      l: Math.random() * 0.35 + 0.25,
+      sx: Math.random() * 1000,
+      sy: Math.random() * 1000,
+    }));
+
+    const FORCE_RADIUS = 140;
+    const FORCE_STRENGTH = 0.03;
+    const FRICTION = 0.995;
+
+    function resize() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener("resize", resize);
+    window.addEventListener("mousemove", (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    function draw() {
+      if (!ctx) return;
+      ctx.clearRect(0, 0, width, height);
+
+      const g = ctx.createRadialGradient(
+        width / 2,
+        height / 2,
+        50,
+        width / 2,
+        height / 2,
+        Math.max(width, height)
+      );
+      g.addColorStop(0, "rgba(255,255,255,0.04)");
+      g.addColorStop(1, "rgba(255,255,255,0.0)");
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, width, height);
+
+      const t = performance.now() * 0.0002;
+      const cx = width / 2;
+      const cy = height / 2;
+
+      particles.forEach((p, i) => {
+        p.vx += Math.sin(t + p.sx) * 0.008;
+        p.vy += Math.cos(t + p.sy) * 0.008;
+
+        const odx = p.x - cx;
+        const ody = p.y - cy;
+        p.vx += -ody * 0.000005;
+        p.vy += odx * 0.000005;
+        const dxm = p.x - mouseX;
+        const dym = p.y - mouseY;
+        const dist = Math.hypot(dxm, dym) || 1;
+        if (dist < FORCE_RADIUS) {
+          const force = (1 - dist / FORCE_RADIUS) * FORCE_STRENGTH;
+          p.vx += (dxm / dist) * force * 2.0;
+          p.vy += (dym / dist) * force * 2.0;
+        }
+
+        p.vx *= FRICTION;
+        p.vy *= FRICTION;
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (p.x < 0) p.x = width;
+        else if (p.x > width) p.x = 0;
+        if (p.y < 0) p.y = height;
+        else if (p.y > height) p.y = 0;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,255,${p.l})`;
+        ctx.fill();
+      });
+
+      ctx.lineWidth = 0.5;
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const a = particles[i];
+          const b = particles[j];
+          const dx = a.x - b.x;
+          const dy = a.y - b.y;
+          const dist = Math.hypot(dx, dy);
+          if (dist < 120) {
+            const alpha = 1 - dist / 120;
+            ctx.strokeStyle = `rgba(255,255,255,${alpha * 0.15})`;
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      requestAnimationFrame(draw);
+    }
+
+    draw();
+  })();
+</script>

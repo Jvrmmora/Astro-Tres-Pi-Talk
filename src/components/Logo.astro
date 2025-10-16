@@ -1,0 +1,117 @@
+---
+
+---
+
+<div class="logo-container glow-effect">
+  <a
+    href="https://www.trespimedios.co/"
+    target="_blank"
+    style="text-decoration: none; color: inherit"
+  >
+    <img
+      class="logo-img"
+      src="https://media.licdn.com/dms/image/v2/D4E0BAQEyYN9q1l0VyQ/company-logo_200_200/B4EZiwJ7w6GwAI-/0/1755302051539/3pi_medios_logo?e=2147483647&v=beta&t=sVzObuTIhf7sLffr4Q0stFd_RjDX4mk5rl9gIddlBDk"
+      alt="Tres Pi Medios"
+    />
+  </a>
+</div>
+
+<style>
+  .logo-container {
+    margin: 2rem 0;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    transform-style: preserve-3d;
+    z-index: 3;
+    margin-top: -1.2rem;
+  }
+
+  .logo-container:hover {
+    transform: scale(1.1);
+  }
+
+  .logo-img {
+    width: 200px;
+    height: 200px;
+    border-radius: 16px;
+    display: block;
+    object-fit: cover;
+    animation: logoBreathTilt 6s ease-in-out infinite;
+    box-shadow: 0 0 50px rgba(255, 255, 255, 0.25);
+    user-select: none;
+    pointer-events: auto;
+  }
+
+  @keyframes logoBreathTilt {
+    0% {
+      transform: translateZ(140px) translateY(0) scale(1) rotateZ(0deg)
+        rotateX(0deg);
+      filter: drop-shadow(0 8px 22px rgba(255, 255, 255, 0.08));
+    }
+    50% {
+      transform: translateZ(140px) translateY(-8px) scale(1.04)
+        rotateZ(-1.2deg) rotateX(2deg);
+      filter: drop-shadow(0 14px 30px rgba(255, 255, 255, 0.15));
+    }
+    100% {
+      transform: translateZ(140px) translateY(0) scale(1) rotateZ(0.8deg)
+        rotateX(0deg);
+      filter: drop-shadow(0 8px 22px rgba(255, 255, 255, 0.08));
+    }
+  }
+
+  .glow-effect {
+    position: relative;
+  }
+
+  .glow-effect::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 120%;
+    height: 120%;
+    background: radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.1) 0%,
+      transparent 70%
+    );
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 0.5;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+      opacity: 0.8;
+      transform: translate(-50%, -50%) scale(1.1);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .logo-img {
+      width: 150px;
+      height: 150px;
+    }
+
+    .logo-container {
+      margin-top: -0.4rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .logo-img {
+      width: 120px;
+      height: 120px;
+    }
+
+    .logo-container {
+      margin-top: -0.2rem;
+    }
+  }
+</style>

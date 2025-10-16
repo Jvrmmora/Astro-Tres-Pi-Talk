@@ -1,16 +1,37 @@
 ---
-
+import Layout from '../layouts/Layout.astro';
+import Background from '../components/Background.astro';
+import Header from '../components/Header.astro';
+import Logo from '../components/Logo.astro';
+import CloudProviders from '../components/CloudProviders.astro';
+import TextCarousel from '../components/TextCarousel.astro';
+import Footer from '../components/Footer.astro';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title="3pi Talks — AWS vs GCP vs Azure">
+  <Background />
+  
+  <div class="container">
+    <Header />
+    <Logo />
+    <CloudProviders />
+  </div>
+
+  <TextCarousel />
+  <Footer />
+</Layout>
+
+<style>
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    perspective: 1200px;
+    transform-style: preserve-3d;
+  }
+</style>
